@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+
+  {% if cart %}
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+      {% for item in cart %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ item.product.price }}</td>
+          <td>${{ item.product.price|multiply_price_quantity:item.quantity }}</td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+        <td>${{ total }}</td>
+      </tr>
+    </table>
+
+    <form method="POST" action="{% url 'checkout' %}">
+      {% csrf_token %}
+      <button type="submit">Checkout</button>
+    </form>
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+{% endblock %}

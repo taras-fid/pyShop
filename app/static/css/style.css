@@ -1,0 +1,134 @@
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+  background-color: #f2f2f2;
+}
+
+/* Style button tag when hovered */
+button[type=submit]:hover {
+  background-color: #005fa1;
+}
+
+
+a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header */
+header {
+  background-color: #0077cc;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Navigation */
+nav {
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+nav li:last-child {
+  margin-right: 0;
+}
+
+nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Main content */
+main {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+/* Forms */
+form {
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: #0077cc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #005ea5;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+/* Footer */
+footer {
+  background-color: #0077cc;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Set User Role</h1>
+
+  <p>Set the role for user "{{ user.username }}":</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+      <option value="{{ user.USER_ROLE }}" {% if user.role == user.USER_ROLE %}selected{% endif %}>User</option>
+      <option value="{{ user.ADMIN_ROLE }}" {% if user.role == user.ADMIN_ROLE %}selected{% endif %}>Admin</option>
+    </select>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

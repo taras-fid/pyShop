@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+{% block content %}
+  <div class="main-page">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+    <ul>
+      {% for product in products %}
+        <li>
+          <form method="POST" action="{% url 'add_to_cart' product_id=product.id %}">
+            {% csrf_token %}
+            <label for="quantity">{{ product.name }} - ${{ product.price }}</label>
+            <input type="number" name="quantity" value="1" min="1">
+            <button type="submit">Add to cart</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
