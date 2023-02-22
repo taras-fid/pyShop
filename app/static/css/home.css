@@ -51,9 +51,17 @@
 .main-page button[type=submit] {
   background-color: #0077be;
   color: #fff;
-  border: none;
-  border-radius: 3px;
+  border: 1px solid #999999;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.disabled-btn {
+    cursor: not-allowed;
+    background-color: rgb(229, 229, 229) !important;
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    pointer-events:none;
 }
