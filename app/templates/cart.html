@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
 {% block content %}
   <h1>{{ title }}</h1>
 
@@ -16,7 +21,15 @@
           <td>{{ item.product.name }}</td>
           <td>{{ item.quantity }}</td>
           <td>${{ item.product.price }}</td>
-          <td>${{ item.product.price|multiply_price_quantity:item.quantity }}</td>
+          <td>
+            <div class="delete-total">
+              ${{ item.product.price|multiply_price_quantity:item.quantity }}
+              <form method="POST" action="{% url 'delete_cart_item' item_id=item.id %}">
+                {% csrf_token %}
+                <button type="submit" style="background-color:#A52A2A;">🗑️</button>
+              </form>
+            </div>
+          </td>
         </tr>
       {% endfor %}
       <tr>
