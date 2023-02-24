@@ -17,4 +17,19 @@
       <td>{{ user.role }}</td>
     </tr>
   </table>
+
+  <table>
+   <tr>
+      <th>Order</th>
+      <th>Products</th>
+      <th>Total</th>
+    </tr>
+    {% for order in orders %}
+      <tr>
+          {% for info in order %}
+            <td>{{ info }}</td>
+          {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
 {% endblock %}

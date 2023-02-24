@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Product, CartItem, Order, Cart
+from .models import Product, CartItem, Order, Cart, OrderItem
 from django.contrib.auth import get_user_model, authenticate, login as Dlogin, logout as Dlogout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -65,8 +65,8 @@ def checkout(request):
         order = Order(user=request.user, total=total)
         order.save()
         for item in cart:
-            order.cart_items.add(item)
-        order.save()
+            order_item = OrderItem(product=item.product, quantity=item.quantity, order=order)
+            order_item.save()
         cart.delete()
         return render(request, 'checkout_success.html', {'title': 'Checkout Success'})
     else:
@@ -118,17 +118,20 @@ User = get_user_model()
 
 
 @login_required
-@user_passes_test(lambda u: u.role == User.ADMIN_ROLE)
-def user_list(request):
+def users(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
 
 
 @login_required
-@user_passes_test(lambda u: u.role == User.ADMIN_ROLE)
 def user_detail(request, user_id):
+    orders_info = []
     user = User.objects.get(id=user_id)
-    return render(request, 'user_detail.html', {'user': user})
+    orders = Order.objects.filter(user=user)
+    for order in orders:
+        order_items = OrderItem.objects.filter(order=order)
+        orders_info.append([order.id, [str(order_item) for order_item in order_items], order.total])
+    return render(request, 'user_detail.html', {'orders': orders_info})
 
 
 @login_required
