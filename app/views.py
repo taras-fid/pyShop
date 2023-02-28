@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model, authenticate, login as Dlogin, l
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 # TODO delete logging
 import logging
 logger = logging.getLogger('django')
@@ -118,12 +120,14 @@ User = get_user_model()
 
 
 @login_required
+@user_passes_test(lambda u: u.is_staff or u.is_superuser)
 def users(request):
     users = User.objects.all()
-    return render(request, 'user_list.html', {'users': users})
+    return render(request, 'user_list.html', {'users': users, 'is_admin': request.user.is_superuser})
 
 
 @login_required
+@user_passes_test(lambda u: u.is_staff or u.is_superuser)
 def user_detail(request, user_id):
     orders_info = []
     user = User.objects.get(id=user_id)
@@ -131,16 +135,28 @@ def user_detail(request, user_id):
     for order in orders:
         order_items = OrderItem.objects.filter(order=order)
         orders_info.append([order.id, [str(order_item) for order_item in order_items], order.total])
-    return render(request, 'user_detail.html', {'orders': orders_info})
+    return render(request, 'user_detail.html', {'orders': orders_info, 'user': user})
 
 
 @login_required
-@user_passes_test(lambda u: u.role == User.ADMIN_ROLE)
+@user_passes_test(lambda u: u.is_superuser)
 def set_user_role(request, user_id):
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
-        user.role = request.POST['role']
+        if request.POST['role'] == 'admin':
+            user.is_superuser = 1
+        elif request.POST['role'] == 'staff':
+            user.is_superuser = 0
+            user.is_staff = 1
+        elif request.POST['role'] == 'user':
+            user.is_superuser = 0
+            user.is_staff = 0
+            if request.user.id == user.id:
+                user.save()
+                return redirect('home')
+        else:
+            return JsonResponse({'error': 'Invalid request'}, status=400)
         user.save()
-        return redirect(reverse('user_detail', args=[user_id]))
+        return render(request, 'user_detail.html', {'user': user})
     else:
         return render(request, 'set_user_role.html', {'user': user})
