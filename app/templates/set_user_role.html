@@ -5,12 +5,13 @@
 
   <p>Set the role for user "{{ user.username }}":</p>
 
-  <form method="post">
+  <form method="POST" action="{% url 'set_user_role' user_id=user.id %}">
     {% csrf_token %}
     <label for="role">Role:</label>
     <select name="role" id="role">
-      <option value="{{ user.USER_ROLE }}" {% if user.role == user.USER_ROLE %}selected{% endif %}>User</option>
-      <option value="{{ user.ADMIN_ROLE }}" {% if user.role == user.ADMIN_ROLE %}selected{% endif %}>Admin</option>
+      <option value="user" {% if user.is_staff == 0 and user.is_superuser == 0 %}selected{% endif %}>User</option>
+      <option value="staff" {% if user.is_staff %}selected{% endif %}>Staff</option>
+      <option value="admin" {% if user.is_superuser %}selected{% endif %}>Admin</option>
     </select>
     <button type="submit">Save</button>
   </form>
