@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>User List</h1>
+  <h1>Users List</h1>
 
   <table>
     <tr>
@@ -14,12 +14,18 @@
       <tr>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td>
+        {% if user.is_superuser %}
+            <td>Admin</td>
+        {% elif user.is_staff %}
+            <td>Staff</td>
+        {% else %}
+            <td>User</td>
+        {% endif %}
         <td>
-          {% if user.role != user.ADMIN_ROLE %}
-            <a href="{% url 'set_user_role' user_id=user.id %}">Change Role</a>
+          {% if is_admin %}
+            <a class="href-btn" href="{% url 'set_user_role' user_id=user.id %}">Change user info</a>
           {% endif %}
-          <a href="{% url 'user_detail' user_id=user.id %}">View Detail</a>
+          <a class="href-btn" href="{% url 'user_detail' user_id=user.id %}">View Detail</a>
         </td>
       </tr>
     {% endfor %}

@@ -14,7 +14,28 @@
     </tr>
     <tr>
       <th>Role</th>
-      <td>{{ user.role }}</td>
+        {% if user.is_superuser %}
+            <td>Admin</td>
+        {% elif user.is_staff %}
+            <td>Staff</td>
+        {% else %}
+            <td>User</td>
+        {% endif %}
     </tr>
+  </table>
+
+  <table>
+   <tr>
+      <th>Order</th>
+      <th>Products</th>
+      <th>Total</th>
+    </tr>
+    {% for order in orders %}
+      <tr>
+          {% for info in order %}
+            <td>{{ info }}</td>
+          {% endfor %}
+      </tr>
+    {% endfor %}
   </table>
 {% endblock %}
