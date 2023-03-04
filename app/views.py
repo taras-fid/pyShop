@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 def home(request):
-    products = Product.objects.all()
+    products = Product.objects.order_by('category__weight')
     user_id = request.user.id
     context = {'title': 'pyShop', 'description': 'Buy needs online!', 'products': products, 'user_id': user_id}
     return render(request, 'home.html', context)
