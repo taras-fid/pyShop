@@ -18,7 +18,7 @@
       </tr>
       {% for item in cart %}
         <tr>
-          <td>{{ item.product.name }}</td>
+          <td><img style="width: 120px;" src="{{ item.product.image.url }}" alt="we lost {{ item.product.name }}`s picture 😭😭😭">{{ item.product.name }}</td>
           <td>{{ item.quantity }}</td>
           <td>${{ item.product.price }}</td>
           <td>
