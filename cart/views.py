@@ -1,63 +1,52 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from .models import CartItem, Product, Cart, Order, OrderItem
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Product, Order, OrderItem
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.views.decorators.http import require_POST
+from .cart import Cart
+from .forms import CartAddProductForm
+
+
+@require_POST
+def add_to_cart(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    form = CartAddProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        cart.add(product=product, quantity=cd['quantity'], update_quantity=cd['update'])
+    return redirect('view_cart')
+
+
+def delete_cart_item(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    cart.remove(product)
+    return redirect('view_cart')
 
 
 def view_cart(request):
-    cart = CartItem.objects.all()
-    total = sum([item.product.price * item.quantity for item in cart])
-    context = {'title': 'Shopping Cart', 'cart': cart, 'total': total}
+    cart = Cart(request)
+    context = {'title': 'Shopping Cart', 'cart': cart, 'total': cart.get_total_price()}
+    for item in cart:
+        item['update_quantity_form'] = CartAddProductForm(
+                                        initial={
+                                            'quantity': item['quantity'],
+                                            'update': True
+                                        })
     return render(request, 'cart.html', context)
-
-
-@login_required
-def add_to_cart(request, product_id):
-    if request.method == 'POST':
-        product = Product.objects.get(pk=product_id)
-        quantity = int(request.POST.get('quantity', 1))
-        cart = Cart.objects.get(user=request.user)
-        try:
-            # If these item is new for the cart.
-            cart_item = CartItem.objects.get(product=product)
-            cart_item.quantity = cart_item.quantity + quantity
-            cart_item.save()
-        except CartItem.DoesNotExist:
-            # If these item is already in the cart.
-            item = CartItem(product=product, quantity=quantity, cart=cart)
-            item.save()
-    else:
-        return redirect(reverse('home'))
-    return redirect(reverse('view_cart'))
-
-
-@login_required
-def delete_cart_item(request, item_id):
-    try:
-        cart_item = CartItem.objects.get(id=item_id)
-        # Check if the cart item belongs to the current user
-        if cart_item.cart.user != request.user:
-            raise CartItem.DoesNotExist
-        cart_item.delete()
-        messages.success(request, "Item deleted from cart.")
-    except CartItem.DoesNotExist:
-        messages.error(request, "Cart item not found.")
-    return redirect('view_cart')
 
 
 @login_required
 def checkout(request):
     if request.method == 'POST':
-        cart_obj = Cart.objects.filter(user=request.user.id)
-        cart = CartItem.objects.filter(cart=cart_obj.first())
-        total = sum([item.product.price * item.quantity for item in cart])
+        cart = Cart(request)
+        total = cart.get_total_price()
         order = Order(user=request.user, total=total)
         order.save()
         for item in cart:
             order_item = OrderItem(product=item.product, quantity=item.quantity, order=order)
             order_item.save()
-        cart.delete()
+        cart.clear()
         return render(request, 'checkout_success.html', {'title': 'Checkout Success'})
     else:
         return render(request, 'checkout.html', {'title': 'Checkout'})

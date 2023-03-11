@@ -24,10 +24,9 @@
           <td>
             <div class="delete-total">
               ${{ item.product.price|multiply_price_quantity:item.quantity }}
-              <form method="POST" action="{% url 'delete_cart_item' item_id=item.id %}">
-                {% csrf_token %}
+              <a href="{% url 'delete_cart_item' product_id=item.product.id %}">
                 <button type="submit" style="background-color:#A52A2A;">🗑️</button>
-              </form>
+              </a>
             </div>
           </td>
         </tr>

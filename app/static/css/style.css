@@ -107,6 +107,19 @@ form button:hover {
   background-color: #005ea5;
 }
 
+a button {
+  background-color: #0077cc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+a button:hover {
+  background-color: #005ea5;
+}
+
 /* Tables */
 table {
   border-collapse: collapse;

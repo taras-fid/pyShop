@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from cart.models import Product, CartItem, Cart
+from cart.models import Product
 from django.contrib.auth import get_user_model, authenticate, login as Dlogin, logout as Dlogout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -41,7 +41,6 @@ def signup(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             Dlogin(request, user)
-            Cart(user=user).save()
             return redirect('home')
     else:
         form = UserCreationForm()
@@ -50,8 +49,5 @@ def signup(request):
 
 @login_required
 def logout(request):
-    user = User.objects.get(id=request.user.id)
-    cart = Cart.objects.filter(user=user)
-    CartItem.objects.filter(cart=cart.first()).delete()
     Dlogout(request)
     return redirect('home')
