@@ -2,27 +2,55 @@
 
 {% block content %}
   <h1>User Detail</h1>
+    {% if request.user.id == user.id %}
+        <form method="POST" action="{% url 'set_user_role' user_id=user.id %}">
+            {% csrf_token %}
+            <label for="f_name">First name:</label>
+            <input name="f_name" value="{{ user.first_name }}" required>
 
-  <table>
-    <tr>
-      <th>Username</th>
-      <td>{{ user.username }}</td>
-    </tr>
-    <tr>
-      <th>Email</th>
-      <td>{{ user.email }}</td>
-    </tr>
-    <tr>
-      <th>Role</th>
-        {% if user.is_superuser %}
-            <td>Admin</td>
-        {% elif user.is_staff %}
-            <td>Staff</td>
-        {% else %}
-            <td>User</td>
-        {% endif %}
-    </tr>
-  </table>
+            <label for="l_name">Last name:</label>
+            <input name="l_name" value="{{ user.last_name }}" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" value="{{ user.email }}" required>
+
+            <button type="submit">Save</button>
+            <h3>
+                Role:
+                {% if user.is_superuser %}
+                    Admin
+                {% elif user.is_staff %}
+                    Staff
+                {% else %}
+                    User
+                {% endif %}
+            </h3>
+        </form>
+    {% else %}
+        <!--todo unchangeable fields value-->
+        <form method="POST" action="{% url 'set_user_role' user_id=user.id %}">
+            {% csrf_token %}
+            <label for="f_name">First name:</label>
+            <input name="f_name" value="{{ user.first_name }}" required>
+
+            <label for="l_name">Last name:</label>
+            <input name="l_name" value="{{ user.last_name }}" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" value="{{ user.email }}" required>
+
+            <h3>
+                Role:
+                {% if user.is_superuser %}
+                    Admin
+                {% elif user.is_staff %}
+                    Staff
+                {% else %}
+                    User
+                {% endif %}
+            </h3>
+        </form>
+    {% endif %}
 
   <table>
    <tr>
