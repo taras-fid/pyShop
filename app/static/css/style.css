@@ -1,4 +1,10 @@
 /* Global styles */
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  list-style: none;
+}
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -84,15 +90,6 @@ form label {
   font-weight: bold;
 }
 
-form input[type="text"],
-form input[type="password"],
-form input[type="email"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
 
 form button {
   background-color: #0077cc;

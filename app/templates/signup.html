@@ -2,11 +2,75 @@
 
 {% block title %}Sign up{% endblock %}
 
+{% load static %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/sign_up.css' %}">{% endblock %}
+
 {% block content %}
-  <h1>Sign up</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-  </form>
+  {% for field in form %}
+    {% for error in field.errors %}
+      <p style="color: red">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
+  <div class="login-container">
+    {% for error in field.errors %}
+      <p style="color: red">{{ error }}</p>
+    {% endfor %}
+    <h1>Sign up</h1>
+    <form method="post">
+      {% csrf_token %}
+      <div class="user-box">
+        <div class="input-box">
+          <input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus required id="id_username">
+          <label for="id_username">Username<span>*</span></label>
+        </div>
+        <div class="help-block">
+          <p>?</p>
+          <div class="help-box">
+            <ul>
+              <li>Required</li>
+              <li>150 characters of fewer</li>
+              <li>Letters, digits and @/./+/-/_ only</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-box">
+        <div class="input-box">
+          <input type="text" name="password1" autocomplete="new-password" required id="id_password1">
+          <label for="id_password1">Password<span>*</span></label>
+        </div>
+        <div class="help-block">
+          <p>?</p>
+          <div class="help-box">
+            <ul>
+              <li>Your password can’t be too similar to your other personal information</li>
+              <li>Your password must contain at least 8 characters</li>
+              <li>Your password  can’t be a commonly used password</li>
+              <li>Your password  can’t be entirely numeric</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-box">
+        <div class="input-box">
+          <input type="text" name="password2" autocomplete="new-password" required id="id_password2">
+          <label for="id_password2">Password Confirmation<span>*</span></label>
+        </div>
+        <div class="help-block">
+          <p>?</p>
+          <div class="help-box">
+            <ul>
+              <li>Enter the same password as before, for verification</li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit"><span>Sign up</span></button>
+    </form>
+  </div>
+
 {% endblock %}

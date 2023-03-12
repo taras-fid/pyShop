@@ -1,0 +1,57 @@
+:focus {
+  outline: none;
+}
+.login-container {
+  margin-bottom: 100px;
+  margin-left: 50%;
+  margin-top: 10%;
+  transform: translate(-50%,0%);
+  width: 400px;
+  box-shadow: 0px 0px 56px -10px rgba(0,0,0,0.75);
+  padding: 10px 30px;
+}
+h1 {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+.user-box {
+  position: relative;
+  margin-bottom: 40px;
+  border-bottom: 1px solid black;
+}
+input {
+  width: 100%;
+  padding: 10px 0px;
+  border: none;
+  border: none;
+  background-color: transparent;
+}
+label {
+  position: absolute;
+  top: 50%;
+  transform: translate(0%,-50%);
+  left: 0px;
+  pointer-events: none;
+}
+.user-box input:focus + label, .user-box input:valid + label {
+  top: -1px;
+  left: 1px;
+  background-color: #f2f2f2;
+  font-size: 12px;
+  transition: .5s ease;
+  color: darkcyan;
+}
+button {
+  margin-top: 30px;
+  background-color: #0077cc;
+  width: 100%;
+  padding: 10px;
+}
+button:hover{
+  border: 2px solid black;
+}
+button span {
+  font-size: 16px;
+  color: white;
+  font-weight: 600;
+}
