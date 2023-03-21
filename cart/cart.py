@@ -62,3 +62,7 @@ class Cart(object):
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
+
+    def change_product_quantity(self, product_id, quantity_change):
+        self.cart[product_id]['quantity'] += int(quantity_change)
+        self.save()

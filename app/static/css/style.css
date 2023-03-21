@@ -79,63 +79,6 @@ main {
   border: 1px solid #ccc;
 }
 
-/* Forms */
-form {
-  margin-bottom: 20px;
-}
-
-form label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-
-form button {
-  background-color: #0077cc;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-form button:hover {
-  background-color: #005ea5;
-}
-
-a button {
-  background-color: #0077cc;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-a button:hover {
-  background-color: #005ea5;
-}
-
-/* Tables */
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-table th,
-table td {
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #ccc;
-}
-
-table th {
-  background-color: #f2f2f2;
-}
-
-/* Footer */
 footer {
   background-color: #0077cc;
   color: #fff;

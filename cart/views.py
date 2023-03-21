@@ -13,7 +13,7 @@ def add_to_cart(request, product_id):
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(product=product, quantity=cd['quantity'], update_quantity=cd['update'])
+        cart.add(product=product, quantity=cd['quantity'] if cd['quantity'] else 1, update_quantity=cd['update'])
     return redirect('view_cart')
 
 
@@ -21,6 +21,12 @@ def delete_cart_item(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
+    return redirect('view_cart')
+
+
+def change_quantity_item(request, product_id, quantity_change):
+    cart = Cart(request)
+    cart.change_product_quantity(product_id, quantity_change)
     return redirect('view_cart')
 
 
