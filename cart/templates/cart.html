@@ -14,7 +14,7 @@
                   <!-- CARD-PRODUCT__HEADER -->
                   <div class="cart-product-header">
                       <p class="product-header__title">Shopping cart</p>
-                      <p class="product-header__subtitle">You have 3 item in your cart</p>
+                      <p class="product-header__subtitle">You have {{ quantity }} item(s) in your cart</p>
                   </div>
 
                   <div class="cart-positions">
@@ -53,7 +53,7 @@
 
                                   <div class="cart-price">
                                       <p>{{ item.product.price|multiply_price_quantity:item.quantity }}</p>
-                                      <p>$</p>
+                                      <p>₴</p>
                                   </div>
 
                                   <div class="cart-delete">

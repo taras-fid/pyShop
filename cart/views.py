@@ -32,13 +32,15 @@ def change_quantity_item(request, product_id, quantity_change):
 
 def view_cart(request):
     cart = Cart(request)
-    context = {'title': 'Shopping Cart', 'cart': cart, 'total': cart.get_total_price()}
+
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(
                                         initial={
                                             'quantity': item['quantity'],
                                             'update': True
                                         })
+    context = {'title': 'Shopping Cart', 'cart': cart, 'total': cart.get_total_price(),
+               'quantity': cart.get_item_count()}
     return render(request, 'cart.html', context)
 
 
@@ -50,9 +52,14 @@ def checkout(request):
         order = Order(user=request.user, total=total)
         order.save()
         for item in cart:
-            order_item = OrderItem(product=item.product, quantity=item.quantity, order=order)
+            order_item = OrderItem(product=item['product'], quantity=item['quantity'], order=order)
             order_item.save()
         cart.clear()
-        return render(request, 'checkout_success.html', {'title': 'Checkout Success'})
+        return render(request, 'payment.html', {'title': 'Payment Information'})
     else:
         return render(request, 'checkout.html', {'title': 'Checkout'})
+
+
+def payment(request):
+    if request.method == 'POST':
+        return render(request, 'checkout_success.html', {'title': 'Checkout Success'})
