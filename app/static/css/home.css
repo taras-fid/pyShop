@@ -49,7 +49,7 @@
 }
 
 .main-page button[type=submit] {
-  background-color: #0077be;
+  background-color: #266895;
   color: #fff;
   border: 1px solid #999999;
   padding: 10px 20px;
@@ -64,4 +64,35 @@
     background-color: #cccccc;
     color: #666666;
     pointer-events:none;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 24%;
+    margin-bottom: 3%;
+}
+
+.category-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border: 0px;
+}
+
+.image {
+    width: 50px;
+    height: 200px;
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+
+input[type="number"] {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+img {
+    object-fit: cover;
 }

@@ -14,21 +14,27 @@
         {% for category in categories %}
           <h2>{{ category.grouper }}</h2>
           <ul>
+            <div class="category-items">
             {% for product in category.list %}
+              <div class="item">
               <li>
                 <form method="POST" action="{% url 'add_to_cart' product_id=product.id %}">
                   {% csrf_token %}
-                  <label for="quantity">{{ product.name }} - ${{ product.price }}</label>
+                  <div class="image"><img style="width: 150px;" src="{{ product.image.url }}" alt="we lost {{ product.name }}`s picture 😭😭😭"></div>
+                  <label for="quantity">{{ product.name }} - {{ product.price }}₴</label>
                   <input type="number" name="quantity" value="1" min="1">
                   {% if user_id %}
                     <button type="submit" style="cursor: pointer;">Add to cart</button>
                   {% else %}
                     <button class="disabled-btn">Add to cart</button>
                   {% endif %}
-                  <img style="width: 150px;" src="{{ product.image.url }}" alt="we lost {{ product.name }}`s picture 😭😭😭">
+
+
                 </form>
               </li>
+              </div>
             {% endfor %}
+              </div>
           </ul>
         {% endfor %}
     </ul>
