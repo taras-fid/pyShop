@@ -16,15 +16,18 @@ def users(request):
 
 
 @login_required
-@user_passes_test(lambda u: u.is_staff or u.is_superuser)
 def user_detail(request, user_id):
-    orders_info = []
-    user = User.objects.get(id=user_id)
-    orders = Order.objects.filter(user=user)
-    for order in orders:
-        order_items = OrderItem.objects.filter(order=order)
-        orders_info.append([order.id, [str(order_item) for order_item in order_items], order.total])
-    return render(request, 'user_detail.html', {'orders': orders_info, 'user': user})
+    if request.user.id == user_id or request.user.is_staff or request.user.is_superuser:
+        orders_info = []
+        user = User.objects.get(id=user_id)
+        orders = Order.objects.filter(user=user)
+        for order in orders:
+            order_items = OrderItem.objects.filter(order=order)
+            orders_info.append([order.id, [str(order_item) for order_item in order_items], order.total])
+        return render(request, 'user_detail.html', {'orders': orders_info, 'user': user })
+    else:
+        # todo error 'no permissions'
+        return redirect('home')
 
 
 @login_required
@@ -46,6 +49,6 @@ def set_user_role(request, user_id):
         else:
             return JsonResponse({'error': 'Invalid request'}, status=400)
         user.save()
-        return render(request, 'user_detail.html', {'user': user})
+        return redirect('user_detail', user_id=user_id)
     else:
         return render(request, 'set_user_role.html', {'user': user})

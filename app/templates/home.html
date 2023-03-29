@@ -6,24 +6,81 @@
 {% endblock %}
 
 {% block content %}
-  <div class="main-page">
-    <h1>{{ title }}</h1>
-    <p>{{ description }}</p>
-    <ul>
-      {% for product in products %}
-        <li>
-          <form method="POST" action="{% url 'add_to_cart' product_id=product.id %}">
-            {% csrf_token %}
-            <label for="quantity">{{ product.name }} - ${{ product.price }}</label>
-            <input type="number" name="quantity" value="1" min="1">
-            {% if user_id %}
-              <button type="submit" style="cursor: pointer;">Add to cart</button>
-            {% else %}
-              <button class="disabled-btn">Add to cart</button>
-            {% endif %}
-          </form>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+    <main>
+        <div class="main-page">
+            <h1>{{ title }}</h1>
+            <p>{{ description }}</p>
+        </div>
+        {% regroup products by category as categories %}
+            {% for category in categories %}
+                <h2>{{ category.grouper }}</h2>
+                <div class="catalog__products-container">
+                    {% for product in category.list %}
+                        <form class="catalog__product-container" method="POST" action="{% url 'add_to_cart' product_id=product.id %}">
+                            {% csrf_token %}
+                            <div class="cart-product">
+                                    <div class="cart-product__img">
+                                        <img  src="{{ product.image.url }}" alt="we lost {{ product.name }}`s picture 😭😭😭">
+                                    </div>
+                                    <div class="cart-product__info">
+                                        <div class="product-info__title">
+                                            <p>{{ product.name }}</p>
+                                        </div>
+                                        <div class="product-info__subtitle">
+                                            <p>{{ product.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="cart-product-data">
+                                    <div class="cart-quantity-box">
+                                        <input style="width: 30px;" type="number" name="quantity" value="1" min="1" readonly>
+                                        <div class="cart-quantity-button">
+                                            <button type="button" style="background-color: transparent"><div class="button-plus"></div></button>
+                                            <button type="button" style="background-color: transparent"><div class="button-minus"></div></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="cart-price">
+                                        <p>{{ product.price }}</p>
+                                        <p>$</p>
+                                    </div>
+
+                                    <div class="action__cart-add">
+                                        <a href="#">
+                                            {% if user_id %}
+                                                <button type="submit" style="cursor: pointer;">Add to cart</button>
+                                            {% else %}
+                                                <button class="disabled-btn">Add to cart</button>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+
+                                </div>
+                        </form>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+    </main>
+    <script>
+        const quantityInputs = document.querySelectorAll('input[name="quantity"]');
+        const plusButtons = document.querySelectorAll('.button-plus');
+        const minusButtons = document.querySelectorAll('.button-minus');
+
+        for (let i = 0; i < quantityInputs.length; i++) {
+          const quantityInput = quantityInputs[i];
+          const plusButton = plusButtons[i];
+          const minusButton = minusButtons[i];
+
+          plusButton.addEventListener('click', function() {
+            quantityInput.stepUp();
+          });
+
+          minusButton.addEventListener('click', function() {
+            if (quantityInput.value > 1) {
+              quantityInput.stepDown();
+            }
+          });
+        }
+    </script>
 {% endblock %}

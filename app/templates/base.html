@@ -3,20 +3,25 @@
   <head>
     <meta charset="UTF-8">
     <title>{% block title %}pyShop{% endblock %}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_head %}
     {% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
   <body>
     <nav>
       <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
-        {% if user.is_authenticated %}
+        {% if request.user.is_authenticated %}
           <li><a href="{% url 'view_cart' %}">Cart</a></li>
           <li><a href="{% url 'logout' %}">Logout</a></li>
-          {% if user.is_staff %}
+          {% if request.user.is_staff %}
             <li><a href="{% url 'users' %}">Users</a></li>
+          {% endif %}
+          {% if request.user.first_name or request.user.last_name %}
+            <li><a href="{% url 'user_detail' user_id=request.user.id %}">{{ request.user.first_name }} {{ request.user.last_name }}</a></li>
+          {% else %}
+            <li><a href="{% url 'user_detail' user_id=request.user.id %}">{{ request.user.username }}</a></li>
           {% endif %}
         {% else %}
           <li><a href="{% url 'login' %}">Login</a></li>
