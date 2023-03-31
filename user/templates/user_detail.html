@@ -3,7 +3,7 @@
 {% block content %}
   <h1>User Detail</h1>
     {% if request.user.id == user.id %}
-        <form method="POST" action="{% url 'set_user_role' user_id=user.id %}">
+        <form method="POST" action="{% url 'change_user_info' user_id=user.id %}">
             {% csrf_token %}
             <label for="f_name">First name:</label>
             <input name="f_name" value="{{ user.first_name }}" required>
@@ -28,7 +28,7 @@
         </form>
     {% else %}
         <!--todo unchangeable fields value-->
-        <form method="POST" action="{% url 'set_user_role' user_id=user.id %}">
+        <form method="POST" action="{% url 'change_user_info' user_id=user.id %}">
             {% csrf_token %}
             <label for="f_name">First name:</label>
             <input name="f_name" value="{{ user.first_name }}" required>

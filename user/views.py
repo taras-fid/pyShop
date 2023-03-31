@@ -31,6 +31,17 @@ def user_detail(request, user_id):
 
 
 @login_required
+def change_user_info(request, user_id):
+    if request.method == 'POST':
+        user = User.objects.get(id=user_id)
+        user.first_name = request.POST['f_name']
+        user.last_name = request.POST['l_name']
+        user.email = request.POST['email']
+        user.save()
+    return redirect('user_detail', user_id=user_id)
+
+
+@login_required
 @user_passes_test(lambda u: u.is_superuser)
 def set_user_role(request, user_id):
     user = User.objects.get(id=user_id)
