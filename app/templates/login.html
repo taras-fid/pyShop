@@ -6,6 +6,11 @@
 {% block extra_head %}<link rel="stylesheet" href="{% static 'css/login.css' %}">{% endblock %}
 
 {% block content %}
+  {% for field in form %}
+    {% for error in field.errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
   <div class="login-container">
     <h1>Log in</h1>
     <form method="post">

@@ -8,13 +8,10 @@
 {% block content %}
   {% for field in form %}
     {% for error in field.errors %}
-      <p style="color: red">{{ error }}</p>
+      <p class="error">{{ error }}</p>
     {% endfor %}
   {% endfor %}
   <div class="login-container">
-    {% for error in field.errors %}
-      <p style="color: red">{{ error }}</p>
-    {% endfor %}
     <h1>Sign up</h1>
     <form method="post">
       {% csrf_token %}
@@ -37,7 +34,7 @@
 
       <div class="user-box">
         <div class="input-box">
-          <input type="text" name="password1" autocomplete="new-password" required id="id_password1">
+          <input type="password" name="password1" autocomplete="new-password" required id="id_password1">
           <label for="id_password1">Password<span>*</span></label>
         </div>
         <div class="help-block">
@@ -55,7 +52,7 @@
 
       <div class="user-box">
         <div class="input-box">
-          <input type="text" name="password2" autocomplete="new-password" required id="id_password2">
+          <input type="password" name="password2" autocomplete="new-password" required id="id_password2">
           <label for="id_password2">Password Confirmation<span>*</span></label>
         </div>
         <div class="help-block">

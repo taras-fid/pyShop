@@ -1,69 +1,105 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cabinet.css' %}">
+{% endblock %}
+
 {% block content %}
-  <h1>User Detail</h1>
-    {% if request.user.id == user.id %}
-        <form method="POST" action="{% url 'set_user_role' user_id=user.id %}">
-            {% csrf_token %}
-            <label for="f_name">First name:</label>
-            <input name="f_name" value="{{ user.first_name }}" required>
+    <main>
+      <div class="container">
+          <div class="user_info">
+              <div class="box">
+                  <div class="line"></div>
+                  <h1>User Detail</h1>
+                  <div class="line"></div>
+              </div>
+                {% if request.user.id == user.id %}
+                    <form method="POST" action="{% url 'change_user_info' user_id=user.id %}">
+                        {% csrf_token %}
+                        <div class="info">
+                            <label for="f_name">First name:</label>
+                            <input name="f_name" value="{{ user.first_name }}" required>
+                        </div>
 
-            <label for="l_name">Last name:</label>
-            <input name="l_name" value="{{ user.last_name }}" required>
+                        <div class="info">
+                            <label for="l_name">Last name:</label>
+                            <input name="l_name" value="{{ user.last_name }}" required>
+                        </div>
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" value="{{ user.email }}" required>
+                        <div class="info">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" value="{{ user.email }}" required>
+                        </div>
 
-            <button type="submit">Save</button>
-            <h3>
-                Role:
-                {% if user.is_superuser %}
-                    Admin
-                {% elif user.is_staff %}
-                    Staff
+                        <div class="info">
+                            <label>Role:</label>
+                            <input value="{% if user.is_superuser %} Admin {% elif user.is_staff %} Staff {% else %} User {% endif %}" readonly>
+                        </div>
+                        <button type="submit">Save</button>
+                    </form>
                 {% else %}
-                    User
+                    <form method="POST" action="{% url 'change_user_info' user_id=user.id %}">
+                        <div class="info">
+                            <label for="f_name">First name:</label>
+                            <input name="f_name" value="{{ user.first_name }}" readonly>
+                        </div>
+
+                        <div class="info">
+                            <label for="l_name">Last name:</label>
+                            <input name="l_name" value="{{ user.last_name }}" readonly>
+                        </div>
+
+                        <div class="info">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" value="{{ user.email }}" readonly>
+                        </div>
+
+                        <div class="info">
+                            <label>Role:</label>
+                            <input value="{% if user.is_superuser %} Admin {% elif user.is_staff %} Staff {% else %} User {% endif %}" readonly>
+                        </div>
+                    </form>
                 {% endif %}
-            </h3>
-        </form>
-    {% else %}
-        <!--todo unchangeable fields value-->
-        <form method="POST" action="{% url 'set_user_role' user_id=user.id %}">
-            {% csrf_token %}
-            <label for="f_name">First name:</label>
-            <input name="f_name" value="{{ user.first_name }}" required>
-
-            <label for="l_name">Last name:</label>
-            <input name="l_name" value="{{ user.last_name }}" required>
-
-            <label for="email">Email:</label>
-            <input type="email" name="email" value="{{ user.email }}" required>
-
-            <h3>
-                Role:
-                {% if user.is_superuser %}
-                    Admin
-                {% elif user.is_staff %}
-                    Staff
-                {% else %}
-                    User
-                {% endif %}
-            </h3>
-        </form>
-    {% endif %}
-
-  <table>
-   <tr>
-      <th>Order</th>
-      <th>Products</th>
-      <th>Total</th>
-    </tr>
-    {% for order in orders %}
-      <tr>
-          {% for info in order %}
-            <td>{{ info }}</td>
-          {% endfor %}
-      </tr>
-    {% endfor %}
-  </table>
+          </div>
+          <div class="user_order">
+              <div class="box">
+                  <div class="line"></div>
+                  <h4>Order</h4>
+                  <div class="line"></div>
+              </div>
+              <div class="products">
+                  {% for order in orders %}
+                      <div class="product">
+                          <div class="information">
+                              <div class="position">
+                                  <p>{{ order.0 }}</p>
+                              </div>
+                              <div class="price">
+                                  <p>{{ order.2 }}</p>
+                                  <p>₴</p>
+                              </div>
+                          </div>
+                          <table>
+                              <tr>
+                                  <th>Product</th>
+                                  <th>Quantity</th>
+                                  <th>Total</th>
+                              </tr>
+                              <tr>
+                                  {% for order_item in order.1 %}
+                                      <tr>
+                                          <td>{{ order_item.product.name }}</td>
+                                          <td>{{ order_item.quantity }}</td>
+                                          <td>{{ order_item.product.price|multiply_price_quantity:order_item.quantity }}</td>
+                                      </tr>
+                                  {% endfor %}
+                              </tr>
+                          </table>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+      </div>
+    </main>
 {% endblock %}

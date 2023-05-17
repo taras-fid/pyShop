@@ -23,11 +23,22 @@ def user_detail(request, user_id):
         orders = Order.objects.filter(user=user)
         for order in orders:
             order_items = OrderItem.objects.filter(order=order)
-            orders_info.append([order.id, [str(order_item) for order_item in order_items], order.total])
-        return render(request, 'user_detail.html', {'orders': orders_info, 'user': user })
+            orders_info.append([order.id, [order_item for order_item in order_items], order.total])
+        return render(request, 'user_detail.html', {'orders': orders_info, 'user': user})
     else:
         # todo error 'no permissions'
         return redirect('home')
+
+
+@login_required
+def change_user_info(request, user_id):
+    if request.method == 'POST':
+        user = User.objects.get(id=user_id)
+        user.first_name = request.POST['f_name']
+        user.last_name = request.POST['l_name']
+        user.email = request.POST['email']
+        user.save()
+    return redirect('user_detail', user_id=user_id)
 
 
 @login_required
