@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
 
-# Create your views here.
 User = get_user_model()
 
 
@@ -26,7 +25,6 @@ def user_detail(request, user_id):
             orders_info.append([order.id, [order_item for order_item in order_items], order.total])
         return render(request, 'user_detail.html', {'orders': orders_info, 'user': user})
     else:
-        # todo error 'no permissions'
         return redirect('home')
 
 

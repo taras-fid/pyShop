@@ -3,7 +3,6 @@ from cart.models import Product
 from django.contrib.auth import get_user_model, authenticate, login as Dlogin, logout as Dlogout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-# TODO delete logging
 import logging
 logger = logging.getLogger('django')
 User = get_user_model()
