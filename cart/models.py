@@ -32,11 +32,11 @@ class Product(models.Model):
         if not self.description:
             description = self.get_description_from_dbpedia()
             self.description = ''.join(split(r'(?<=[.;])\s', description)[:3])  # first 3 sentences from str.
-            # TODO: upload database with new data of this field
+            self.save()
 
         if not self.image:
             self.image = self.get_image_from_dbpedia()
-            # TODO: upload database with new data of this field
+            self.save()
 
     def get_description_from_dbpedia(self):
         name = str(self.name).replace(' ', '-').title()  # converting name for searching param in dbpedia.
@@ -66,7 +66,7 @@ class Product(models.Model):
             image_url = result['image']['value']
             if get_request(image_url).status_code != 200:
                 return '/static/images/products_img/default.jpg'  # if there is no img in dbpedia return default img.
-            return get_request(image_url)
+            return image_url
         else:
             return '/static/images/products_img/default.jpg'  # if there is no result in dbpedia return default img.
 
