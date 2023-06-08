@@ -16,9 +16,9 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    price = models.DecimalField(default=0, max_digits=10, decimal_places=2, null=True)
+    description = models.TextField(blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='app/static/images/products_img',
                               default='static/images/products_img/default.jpg')
 
